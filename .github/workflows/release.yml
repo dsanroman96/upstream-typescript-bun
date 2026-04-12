@@ -1,0 +1,22 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag in vX.Y.Z format"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    uses: dsanroman96/workflow-templates/.github/workflows/upstream-release.yml@main
+    with:
+      tag: ${{ inputs.tag }}
+      release_handler: typescript/bun
+      target_path: package.json
+      downstream_repos: ${{ vars.DOWNSTREAM_REPOS }}
+    secrets: inherit
